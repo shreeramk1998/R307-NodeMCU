@@ -3,10 +3,13 @@
 #include <ESP8266HTTPClient.h>
 
 WiFiClient client;
-const char* hostGet = "192.168.2.4"; 
+const char* hostGet = "192.168.2.3"; 
 ESP8266WebServer server; 
 const char* ssid     = "DIGISOL";         // The SSID (name) of the Wi-Fi network you want to connect to
 const char* password = "shreeram1998";     // The password of the Wi-Fi network
+//const char* ssid     = "realmeXT";         // The SSID (name) of the Wi-Fi network you want to connect to
+//const char* password = "helloworld98";     // The password of the Wi-Fi network
+
 uint8_t pin_led = 16;
 char sessionPage[] PROGMEM = R"=====(
 <html>
@@ -55,13 +58,12 @@ void postData(String ip) {
    const int httpGetPort = 8080;
 
    //the path and file to send the data to:
-   String urlGet = "/teacher";
+   String urlGet = "/teacher/class";
 
  
   // We now create and add parameters:
-  ip;
    
-  urlGet += "/" + ip;
+  urlGet += "?ip=" + ip+"&classroom=C1";
   Serial.println("urlget:"+urlGet);
    
       Serial.print(">>> Connecting to host: ");
@@ -142,6 +144,7 @@ void setup() {
   server.begin();
   server.on("/session",checkSession);
   server.on("/getIP",ip);
+  postData(WiFi.localIP().toString().c_str());
 }
 
 void loop() { 
